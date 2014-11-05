@@ -1,5 +1,10 @@
 #!/usr/bin/env node
  
+// A simple DMX example which will turn all the lights on and off every second
+
+// Note, there is something wrong with my Entec box, and the pattern [250, 250, 250, ...] is what turns every other light no.
+// This is probably only for me :(
+
 ///////////////////
 // dmx.js //
 ///////////////////
@@ -7,23 +12,18 @@
 var ftdi = require('ftdi');
 
 var settings = {
-  'baudrate': 115200 / 2, // needs to be devided by 2... for some reason
+  'baudrate': 115200 / 2,
   'databits': 8,
   'stopbits': 2,
-  // 'parity'  : 'odd',
-  // 'parity'  : 'even',
-  // 'parity'  : 'mark',
-  // 'parity'  : 'space',
   'parity'  : 'none',
 };
  
 var sleepTime = 21;
 var device;
-// var universe = new Buffer(513);
-var universe = new Buffer(10);
+var universe = new Buffer(513);
 var on = true;
 universe[0]   = 0x00;
-setAll(0x00);
+setAll(250);
 
 function writeLoop(){
   device.write(universe);
@@ -44,22 +44,18 @@ function setAll(v){
 
 var flop = function(){
   if(on === true){
-    setAll(0x00);
+    setAll(0);
   }else{
     setAll(250);
   }
   on = !on;
-
-  console.log(universe);
 };
  
 ftdi.find(function(err, devices){
   console.log(devices);
   device = new ftdi.FtdiDevice(devices[0]);
-  setAll(250); // why <--- ?
-  setInterval(flop, 500);
+  setInterval(flop, 1000);
   device.open(settings, function(){
     writeLoop();
-    console.log(universe);
   });
 });

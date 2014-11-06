@@ -35,10 +35,14 @@ var twitter = function(api, options, next){
 
     api.twitter.verifyCredentials(function (err, data) {
       if(!err){
+        api.log("connected to twitter");
         api.twitter.stream('statuses/filter', {track:'#' + api.config.servers.twitter.hashtag}, function(stream) {
           api.twitterStram = stream;
           api.twitterStram.on('data', function (tweet) {
             self.addTweet(tweet);
+          });
+          api.twitterStram.on('error', function (err) {
+            api.log(err, 'error');
           });
           next();
         });
@@ -83,12 +87,25 @@ var twitter = function(api, options, next){
 
   server.on("connection", function(connection){
     connection.error = null;
-    // TODO: 
-    connection.params = {
-      channel: 1,
-      power: 0
-    };
     connection.response = {};
+
+    var power;
+    var channel = 1;
+    if(api.dmx.universe[channel] === 0){
+      power = "250";
+    }else{
+      power = "0";
+    }
+
+    connection.params = {
+      hashtag: connection.rawConnection.hashtag,
+      message: connection.rawConnection.message,
+      twitterUser: connection.rawConnection.twitterUser,
+      action: "dmx",
+      channel: channel,
+      power: power
+    };
+
     server.processAction(connection);
   });
 

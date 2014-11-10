@@ -15,7 +15,6 @@ exports.dmx = function(api, next){
   api.dmx = {
 
     sleepTime: 200, // ms between DMX Frames; this is locked
-    // sleepTime: 20, // ms between DMX Frames; this is locked
     deviceId: 0,   // assume the first FTDI device is the one we want
     device: null,
     // universe: new Array(513),

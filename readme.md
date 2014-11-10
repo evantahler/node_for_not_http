@@ -5,7 +5,7 @@
 - You need the fdti driver: http://www.ftdichip.com/Drivers/D2XX.htm (access via normal FTDI)
   - (or `./node_modules/ftdi/instal.sh`)
 
-- On Mavericks, there is some comaptibility issue or something 
+- On OSX Mavericks / Yosemite, there is some comaptibility issue or something 
   - `sudo kextunload -b com.apple.driver.AppleUSBFTDI`
   - http://support.synthe-fx.com/customer/portal/articles/1346688-important-lcompanion-10-9-mavericks-info
 

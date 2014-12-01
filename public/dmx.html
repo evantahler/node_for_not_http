@@ -1,0 +1,38 @@
+<html>
+<head>
+  <link href='/public/css/actionhero.css' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="/public/javascript/actionheroClient.js"></script>
+
+  <script type="text/javascript">
+
+  var client;
+  var boot = function(){
+    client = new actionheroClient();
+  
+    client.on('connected',    function(){ console.log('connected!'); });
+    client.on('disconnected', function(){ console.log('disconnected :('); });
+    // client.on('message',      function(message){ console.log(message); });
+    client.on('alert',        function(message){ alert( JSON.stringify(message) ); });
+    client.on('api',          function(message){ alert( JSON.stringify(message) ); });
+    client.on('welcome',      function(message){ console.log(message); });
+    client.on('say',          function(message){ console.log(message); });
+
+    client.connect(function(err, details){
+      //
+    });
+      
+  };
+
+  boot();
+
+  </script>
+  
+</head>
+<body>
+  <pre align="left">
+  client.action('dmx', {channel: 1, power: 250}, function(data){
+    console.log(data);
+  });
+  </pre>
+</body>
+</html>

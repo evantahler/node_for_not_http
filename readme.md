@@ -20,7 +20,7 @@ This only is tested on OSX Yosemite
 
 ### Config
 
-Be sure to update your twitter API keys in `/config/servers/twitter.js`
+Be sure to update your twitter API keys in `/config/servers/twitter.js` (which you copy from `twitter.example.js`)
 
 ## Run
 

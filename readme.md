@@ -15,7 +15,7 @@ This only is tested on OSX Yosemite
   - `sudo kextunload -b com.apple.driver.AppleUSBFTDI`
   - http://support.synthe-fx.com/customer/portal/articles/1346688-important-lcompanion-10-9-mavericks-info
 
--- and to remove:
+- and to remove:
 `cd /System/Library/Extensions && sudo rm -r FTDIUSBSerialDriver.kext`
 
 ### Config

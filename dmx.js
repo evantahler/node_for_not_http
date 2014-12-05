@@ -2,9 +2,6 @@
  
 // A simple DMX example which will turn all the lights on and off every second
 
-// Note, there is something wrong with my Entec box, and the pattern [250, 250, 250, ...] is what turns every other light no.
-// This is probably only for me :(
-
 ///////////////////
 // dmx.js //
 ///////////////////

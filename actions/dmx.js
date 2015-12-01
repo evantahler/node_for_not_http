@@ -1,25 +1,29 @@
 exports.action = {
   name:                   'dmx',
   description:            'dmx',
-  blockedConnectionTypes: [],
   outputExample:          {},
-  matchExtensionMimeType: false,
   version:                1.0,
   toDocument:             true,
 
   inputs: {
-    required: ['channel', 'power'],
-    optional: [],
+    channel: {
+      required: true,
+      formatter: function(p){ return parseInt(p); }
+    },
+    power: {
+      required: true,
+      formatter: function(p){ return parseInt(p); }
+    }
   },
 
-  run: function(api, connection, next){
-    var channel = parseInt(connection.params.channel);
-    var power   = parseInt(connection.params.power);
+  run: function(api, data, next){
     try{
-      api.dmx.set(channel, power);
+      api.dmx.set(data.params.channel, data.params.power);
+      // api.dmx.setAll(data.params.power);
+      data.response.ok = true;
     }catch(err){
-      connection.error = err;
+      next(err);
     }
-    next(connection, true);
+    next();
   }
 };

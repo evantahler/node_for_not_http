@@ -1,20 +1,19 @@
-var ntwitter = require("ntwitter");
+var Twitter = require("twitter");
 
-var twitter = function(api, options, next){
+var initialize = function(api, options, next){
 
   //////////
   // INIT //
   //////////
 
-  var type = "twitter";
+  var type = 'twitter';
+
   var attributes = {
     canChat: true,
-    logConnections: false,
+    logConnections: true,
     logExits: false,
     sendWelcomeMessage: false,
-    verbs: [
-      'say'
-    ],
+    verbs: ['say']
   };
 
   var server = new api.genericServer(type, options, attributes);
@@ -23,34 +22,51 @@ var twitter = function(api, options, next){
   // REQUIRED METHODS //
   //////////////////////
 
-  server._start = function(next){
+  server.start = function(next){
     var self = this;
     
-    api.twitter = new ntwitter({
+    api.twitter = new Twitter({
       consumer_key:        api.config.servers.twitter.consumer_key,
       consumer_secret:     api.config.servers.twitter.consumer_secret,
       access_token_key:    api.config.servers.twitter.access_token_key,
       access_token_secret: api.config.servers.twitter.access_token_secret
     });
 
-    api.twitter.verifyCredentials(function (err, data) {
-      if(!err){
-        api.log("connected to twitter");
-        api.twitter.stream('statuses/filter', {track:'#' + api.config.servers.twitter.hashtag}, function(stream) {
-          api.twitterStram = stream;
-          api.twitterStram.on('data', function (tweet) {
-            self.addTweet(tweet);
-          });
-          api.twitterStram.on('error', function (err) {
-            api.log(err, 'error');
-          });
-          next();
-        });
-      }else{
-        api.log("Twitter Error: " + err, "error");
-        next();
-      }
+    api.log('twitter tracking: #' + api.config.servers.twitter.hashtag);
+    api.twitter.stream('statuses/filter', {track: api.config.servers.twitter.hashtag}, function(stream) {
+      stream.on('data', function(tweet) {
+        self.addTweet(tweet);
+      });
+     
+      stream.on('error', function(error) {
+        throw error;
+      });
     });
+
+    next();
+
+    // api.twitter.verifyCredentials(function (err, data) {
+    //   if(!err){
+    //     api.log("connected to twitter");
+    //     api.twitter.stream('statuses/filter', {track:'#' + api.config.servers.twitter.hashtag}, function(stream) {
+    //       api.twitterStram = stream;
+    //       api.twitterStram.on('data', function (tweet) {
+    //         self.addTweet(tweet);
+    //       });
+    //       api.twitterStram.on('error', function (err) {
+    //         api.log(err, 'error');
+    //       });
+    //       next();
+    //     });
+    //   }else{
+    //     api.log("Twitter Error: " + err, "error");
+    //     next();
+    //   }
+    // });
+  };
+
+  server.stop = function(next){
+    next();
   };
 
   server.addTweet = function(tweet){
@@ -73,44 +89,46 @@ var twitter = function(api, options, next){
     }); // will emit "connection"
   };
 
-  server._stop = function(next){
-    next();
+  server.sendMessage = function(connection, message, messageCount){
+
+  };
+
+  server.sendFile = function(connection, error, fileStream, mime, length){
+
   };
 
   server.goodbye = function(connection, reason){
-    //
+
   };
 
   ////////////
   // EVENTS //
   ////////////
 
-  server.on("connection", function(connection){
+  server.on('connection', function(connection){
     connection.error = null;
     connection.response = {};
+    var action = '';
 
-    var power;
-    var channel = 1;
-    if(api.dmx.universe[channel] === 0){
-      power = "250";
-    }else{
-      power = "0";
+    if(connection.rawConnection.message.match(/ off/)){
+      action = 'off';
+    }
+    else if(connection.rawConnection.message.match(/ on/)){
+      action = 'on';
     }
 
     connection.params = {
       hashtag: connection.rawConnection.hashtag,
       message: connection.rawConnection.message,
       twitterUser: connection.rawConnection.twitterUser,
-      action: "dmx",
-      channel: channel,
-      power: power
+      action: action,
     };
 
     server.processAction(connection);
   });
 
-  server.on('actionComplete', function(connection, toRender, messageCount){
-    connection.destroy();
+  server.on('actionComplete', function(data){
+    data.connection.destroy();
   });
 
   /////////////
@@ -120,6 +138,4 @@ var twitter = function(api, options, next){
   next(server);
 };
 
-/////////////////////////////////////////////////////////////////////
-// exports
-exports.twitter = twitter;
+exports.initialize = initialize;

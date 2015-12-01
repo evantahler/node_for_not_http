@@ -1,35 +1,24 @@
-var action = {};
+exports.status = {
+  name: 'status',
+  description: 'I will return some basic information about the API',
+   
+  outputExample:{  
+    "id":"192.168.2.11",
+    "actionheroVersion":"9.4.1",
+    "uptime":10469,
+    "serverInformation":{  
+      "serverName":"actionhero API",
+      "apiVersion":"0.0.1",
+      "requestDuration":12,
+      "currentTime":1420953679624
+    }
+  },
 
-/////////////////////////////////////////////////////////////////////
-// metadata
-action.name = 'status';
-action.description = 'I will return some basic information about the API';
-action.inputs = {
-  'required' : [],
-  'optional' : []
+  run: function(api, data, next){
+    data.response.id                = api.id;
+    data.response.actionheroVersion = api.actionheroVersion;
+    data.response.uptime            = new Date().getTime() - api.bootTime;
+    
+    next();
+  }
 };
-action.blockedConnectionTypes = [];
-action.outputExample = {
-  status: 'OK',
-  uptime: 1234,
-  stats: {}
-}
-
-/////////////////////////////////////////////////////////////////////
-// functional
-action.run = function(api, connection, next){
-  connection.response.id = api.id;
-  var now = new Date().getTime();
-  connection.response.uptime = now - api.bootTime;
-  api.stats.getAll(function(err, stats){
-    connection.response.stats = stats;
-    api.tasks.details(function(err, details){
-      connection.response.queues = details['queues'];
-      next(connection, true);
-    });
-  });
-};
-
-/////////////////////////////////////////////////////////////////////
-// exports
-exports.action = action;

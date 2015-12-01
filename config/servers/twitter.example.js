@@ -3,12 +3,11 @@ exports.default = {
     twitter: function(api){
       return {
         enabled: true,
-        hashtag: "nodelights",
-        // Be sure to fill these in with your own API keys
-        consumer_key: "XXX",
-        consumer_secret: "XXX",
-        access_token_key: "XXX",
-        access_token_secret: "XXX",
+        hashtag: 'nodelights',
+        consumer_key: 'xxx',
+        consumer_secret: 'xxx',
+        access_token_key: ' xxx',
+        access_token_secret: 'xxx',
       };
     }
   }

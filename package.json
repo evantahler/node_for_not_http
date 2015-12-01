@@ -1,28 +1,27 @@
- {
-  "author"      : "Evan <evan@evantahler.com>",
-  "name"        : "node_for_not_http",
-  "description" : "node_for_not_http",
-  "version"     : "0.0.1",
-  "repository"  : "git@github.com:evantahler/node_for_not_http.git",
-  "engines"     : {
+{
+  "author": "YOU <YOU@example.com>",
+  "name": "my_actionhero_project",
+  "description": "my actionhero project",
+  "version": "0.0.1",
+  "engines": {
     "node": ">=0.10.0"
   },
-  "dependencies" : {
-    "actionhero" : "9.4.0",
-    "ws"         : "latest",
-    "grunt"      : "latest",
-    "ftdi"       : "latest",
-    "ntwitter"   : "latest"
+  "dependencies": {
+    "actionhero": "12.3.0",
+    "ftdi": "latest",
+    "grunt": "latest",
+    "twitter": "^1.2.5",
+    "ws": "latest"
   },
-  "devDependencies" : {
-    "mocha"  : "latest",
-    "should" : "latest"
+  "devDependencies": {
+    "mocha": "latest",
+    "should": "latest"
   },
-  "scripts" : {
-    "help"         : "actionhero help",
-    "start"        : "actionhero start",
-    "actionhero"   : "actionhero",
-    "startCluster" : "actionhero startCluster",
-    "test"         : "mocha"
+  "scripts": {
+    "help": "actionhero help",
+    "start": "actionhero start",
+    "actionhero": "actionhero",
+    "startCluster": "actionhero startCluster",
+    "test": "mocha"
   }
 }

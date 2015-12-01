@@ -20,7 +20,9 @@ exports.default = {
     try{
       fs.mkdirSync('./log');
     } catch(e) {
-      if(e.code != 'EEXIST'){ console.log(e); process.exit(); }
+      if(e.code !== 'EEXIST'){
+        return next([new Error('Cannot create ./log directory'), e])
+      }
     }
     logger.transports.push(function(api, winston) {
       return new (winston.transports.File)({
@@ -30,6 +32,15 @@ exports.default = {
       });
     });
 
+    // the maximum length of param to log (we will truncate)
+    logger.maxLogStringLength = 100;
+
+    // you can optionally set custom log levels 
+    // logger.levels = {good: 0, bad: 1};
+
+    // you can optionally set custom log colors 
+    // logger.colors = {good: 'blue', bad: 'red'};
+    
     return logger;
   }
 }

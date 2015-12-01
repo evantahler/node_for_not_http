@@ -12,17 +12,27 @@ exports.default = {
       welcomeMessage: 'Hello! Welcome to the actionhero api',
       // the redis prefix for actionhero's cache objects
       cachePrefix: 'actionhero:cache:',
+      // the redis prefix for actionhero's cache/lock objects
+      lockPrefix: 'actionhero:lock:',
+      // how long will a lock last before it exipres (ms)?
+      lockDuration: 1000 * 10, // 10 seconds
       // Watch for changes in actions and tasks, and reload/restart them on the fly
-      developmentMode: true,
+      developmentMode: false,
+      // Should we run each action within a domain? Makes your app safer but slows it down
+      actionDomains: true,
       // How many pending actions can a single connection be working on
       simultaneousActions: 5,
+      // allow connections to be created without remoteIp and remotePort (they will be set to 0)
+      enforceConnectionProperties: true,
       // disables the whitelisting of client params
       disableParamScrubbing: false,
       // params you would like hidden from any logs
       filteredParams: [],
+      // values that signify missing params
+      missingParamChecks: [null, '', undefined],
       // The default filetype to server when a user requests a directory
       directoryFileType : 'index.html',
-      // The default priority level given to preProcessors, postProcessors, createCallbacks, and destroyCallbacks
+      // The default priority level given to middleware of all types (action, connection, and say)
       defaultMiddlewarePriority : 100,
       // configuration for your actionhero project structure
       paths: {
@@ -35,32 +45,27 @@ exports.default = {
         'initializer': [ __dirname + '/../initializers' ] ,
         'plugin':      [ __dirname + '/../node_modules' ] 
       },
-      // list of actionhero plugins you want to load
-      plugins: [
-        // this is a list of plugin names
-        // plugin still need to be included in `package.json` or the path defined in `api.config.general.paths.plugin`
-      ],
       // hash containing chat rooms you wish to be created at server boot
-      startingChatRooms: {
-        // format is {roomName: {authKey, authValue}}
-        //'secureRoom': {authorized: true},
-        'defaultRoom': {}
-      }
+      startingChatRooms: {}
     }
   }
 }
 
 exports.test = { 
   general: function(api){
+    var actionDomains = true;
+    if(process.env.ACTIONDOMAINS === 'false'){
+      actionDomains = false;
+    }
+
     return {
       id: 'test-server',
       developmentMode: true,
+      actionDomains: actionDomains,
       startingChatRooms: {
         'defaultRoom': {},
         'otherRoom': {},
-        'secureRoom': {authorized: true}
       },
-      developmentMode: true
     }
   }
 }

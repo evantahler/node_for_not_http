@@ -4,6 +4,8 @@ https://docs.google.com/presentation/d/1jijGOARfeMDSqZnl52uv3N9zL8K4Eiu4g6wGTtUI
 
 ## Install
 
+This only works on node v0.10 (the FTDI diver needs to be updated).  Use `nvm` if you need to chagne versions
+
 ### Drivers
 
 This only is tested on OSX Yosemite

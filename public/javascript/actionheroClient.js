@@ -2828,7 +2828,7 @@ Primus.prototype.decoder = function decoder(data, fn) {
 
   fn(err, data);
 };
-Primus.prototype.version = "4.0.2";
+Primus.prototype.version = "4.0.4";
 
 if (
      'undefined' !== typeof document

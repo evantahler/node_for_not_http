@@ -28,9 +28,9 @@ var loopTimer;
 function writeLoop(){
   clearTimeout(loopTimer);
   
-  // device.write([]);
+  device.write([0x00]);
   setTimeout(function(){
-    device.write([0x00]);
+    // device.write([0x00]);
     device.write(universe);
 
     if(cluster.isMaster){ process.stdout.write("."); }

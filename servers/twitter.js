@@ -44,25 +44,6 @@ var initialize = function(api, options, next){
     });
 
     next();
-
-    // api.twitter.verifyCredentials(function (err, data) {
-    //   if(!err){
-    //     api.log("connected to twitter");
-    //     api.twitter.stream('statuses/filter', {track:'#' + api.config.servers.twitter.hashtag}, function(stream) {
-    //       api.twitterStram = stream;
-    //       api.twitterStram.on('data', function (tweet) {
-    //         self.addTweet(tweet);
-    //       });
-    //       api.twitterStram.on('error', function (err) {
-    //         api.log(err, 'error');
-    //       });
-    //       next();
-    //     });
-    //   }else{
-    //     api.log("Twitter Error: " + err, "error");
-    //     next();
-    //   }
-    // });
   };
 
   server.stop = function(next){
